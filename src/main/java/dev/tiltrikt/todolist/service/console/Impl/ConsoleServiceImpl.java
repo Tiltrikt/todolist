@@ -5,6 +5,7 @@ import dev.tiltrikt.todolist.service.console.ConsoleService;
 import dev.tiltrikt.todolist.service.task.TaskService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +16,9 @@ import java.util.Scanner;
 public class ConsoleServiceImpl implements ConsoleService {
 
     Scanner scanner = new Scanner(System.in);
-    TaskService taskService;
-
     @Autowired
-    public ConsoleServiceImpl(TaskService taskService) {
-        this.taskService = taskService;
-    }
+    @NonFinal
+    TaskService taskService;
 
     @Override
     public void printActive() {
