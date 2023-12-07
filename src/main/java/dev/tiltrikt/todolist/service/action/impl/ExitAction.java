@@ -1,6 +1,6 @@
 package dev.tiltrikt.todolist.service.action.impl;
 
-import dev.tiltrikt.todolist.service.action.Action;
+import dev.tiltrikt.todolist.service.action.ActionService;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component("exitAction")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ExitAction implements Action {
+public class ExitAction implements ActionService {
 
     ConfigurableApplicationContext applicationContext;
 

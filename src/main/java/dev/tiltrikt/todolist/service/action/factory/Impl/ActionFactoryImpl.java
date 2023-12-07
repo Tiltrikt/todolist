@@ -1,7 +1,7 @@
 package dev.tiltrikt.todolist.service.action.factory.Impl;
 
 import dev.tiltrikt.todolist.service.action.factory.ActionFactory;
-import dev.tiltrikt.todolist.service.action.Action;
+import dev.tiltrikt.todolist.service.action.ActionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -19,7 +19,7 @@ public class ActionFactoryImpl implements ActionFactory {
   ApplicationContext applicationContext;
 
   @Override
-  public @NotNull Action getAction(@NotNull String commandName) {
-    return applicationContext.getBean(commandName + "Action", Action.class);
+  public @NotNull ActionService getAction(@NotNull String commandName) {
+    return applicationContext.getBean(commandName + "Action", ActionService.class);
   }
 }

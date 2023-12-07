@@ -1,9 +1,9 @@
 package dev.tiltrikt.todolist.service.action.factory;
 
-import dev.tiltrikt.todolist.service.action.Action;
+import dev.tiltrikt.todolist.service.action.ActionService;
 import org.jetbrains.annotations.NotNull;
 
 public interface ActionFactory {
 
-  @NotNull Action getAction(@NotNull String commandName);
+  @NotNull ActionService getAction(@NotNull String commandName);
 }

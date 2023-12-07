@@ -1,7 +1,7 @@
 package dev.tiltrikt.todolist.service.action.impl;
 
 import dev.tiltrikt.todolist.Task;
-import dev.tiltrikt.todolist.service.action.Action;
+import dev.tiltrikt.todolist.service.action.ActionService;
 import dev.tiltrikt.todolist.service.task.TaskService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 @Component("finishedAction")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class FinishedAction implements Action {
+public class FinishedAction implements ActionService {
 
     TaskService taskService;
 

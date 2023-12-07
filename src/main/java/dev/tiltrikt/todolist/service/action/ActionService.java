@@ -4,7 +4,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 @FunctionalInterface
-public interface Action {
+public interface ActionService {
 
   void execute(@NotNull List<String> args);
 }
