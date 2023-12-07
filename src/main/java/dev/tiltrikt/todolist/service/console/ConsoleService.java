@@ -1,16 +1,16 @@
 package dev.tiltrikt.todolist.service.console;
 
 public interface ConsoleService {
-    Runnable printActive();
+  Runnable printActive();
 
-    Runnable printFinished();
+  Runnable printFinished();
 
-    Runnable askToAddTask();
+  Runnable askToAddTask();
 
-    Runnable askToFinishTask();
+  Runnable askToFinishTask();
 
-    Runnable printUsageInfo();
+  Runnable printUsageInfo();
 
-    void printCommandLinePrompt();
+  void printCommandLinePrompt();
 
 }

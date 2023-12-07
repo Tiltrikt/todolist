@@ -11,24 +11,24 @@ import lombok.experimental.NonFinal;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class Task {
 
-    int id;
+  int id;
 
-    String text;
+  String text;
 
-    @NonFinal
-    @Builder.Default
-    boolean active = true;
+  @NonFinal
+  @Builder.Default
+  boolean active = true;
 
-    public boolean active() {
-        return active;
-    }
+  public boolean active() {
+    return active;
+  }
 
-    public boolean finished() {
-        return !active;
-    }
+  public boolean finished() {
+    return !active;
+  }
 
-    public void finish() {
-        active = false;
-    }
+  public void finish() {
+    active = false;
+  }
 
 }
