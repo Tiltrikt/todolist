@@ -1,6 +1,6 @@
 package dev.tiltrikt.todolist.service;
 
-import dev.tiltrikt.todolist.service.action.Action;
+import dev.tiltrikt.todolist.service.action.ActionService;
 import dev.tiltrikt.todolist.service.action.factory.ActionFactory;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +37,7 @@ public class CommandBootstrap implements CommandLineRunner {
 
   private void handleAction(@NotNull List<String> arguments) {
     try {
-      Action action = actionFactory.getAction(arguments.get(0));
+      ActionService action = actionFactory.getAction(arguments.get(0));
       action.execute(arguments.stream().skip(1).toList());
     } catch (Exception exception) {
       System.out.println("Invalid command. Type help...");
