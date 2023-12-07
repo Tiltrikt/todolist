@@ -1,6 +1,7 @@
-package dev.tiltrikt.todolist.service.console.action.factory;
+package dev.tiltrikt.todolist.service.action.factory.Impl;
 
-import dev.tiltrikt.todolist.service.console.action.Action;
+import dev.tiltrikt.todolist.service.action.factory.ActionFactory;
+import dev.tiltrikt.todolist.service.action.Action;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

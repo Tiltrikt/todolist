@@ -1,4 +1,4 @@
-package dev.tiltrikt.todolist.service.console.action;
+package dev.tiltrikt.todolist.service.action;
 
 import java.util.List;
 import org.jetbrains.annotations.NotNull;

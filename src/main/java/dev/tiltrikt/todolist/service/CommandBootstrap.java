@@ -1,8 +1,7 @@
 package dev.tiltrikt.todolist.service;
 
-import dev.tiltrikt.todolist.service.console.ConsoleService;
-import dev.tiltrikt.todolist.service.console.action.Action;
-import dev.tiltrikt.todolist.service.console.action.factory.ActionFactory;
+import dev.tiltrikt.todolist.service.action.Action;
+import dev.tiltrikt.todolist.service.action.factory.ActionFactory;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -21,17 +20,14 @@ public class CommandBootstrap implements CommandLineRunner {
   @NotNull Scanner scanner = new Scanner(System.in);
 
   @NotNull
-  ConsoleService consoleService;
-
-  @NotNull
   ActionFactory actionFactory;
 
   @Override
   @SuppressWarnings("InfiniteLoopStatement")
   public void run(String @NotNull ... args) {
-    consoleService.printUsageInfo().run();
-    consoleService.printCommandLinePrompt();
+    handleAction(List.of("help"));
     while (true) {
+      handleAction(List.of("printCommandLinePromptAction"));
       String line = scanner.nextLine();
       List<String> arguments = Arrays.stream(line.split(" "))
           .toList();

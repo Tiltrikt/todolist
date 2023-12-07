@@ -1,6 +1,6 @@
-package dev.tiltrikt.todolist.service.console.action.factory;
+package dev.tiltrikt.todolist.service.action.factory;
 
-import dev.tiltrikt.todolist.service.console.action.Action;
+import dev.tiltrikt.todolist.service.action.Action;
 import org.jetbrains.annotations.NotNull;
 
 public interface ActionFactory {

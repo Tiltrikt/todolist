@@ -1,7 +1,9 @@
-package dev.tiltrikt.todolist.service.console.action.impl;
+package dev.tiltrikt.todolist.service.action.impl;
 
-import dev.tiltrikt.todolist.service.console.action.Action;
+import dev.tiltrikt.todolist.service.action.Action;
+
 import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,11 +16,11 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ExitAction implements Action {
 
-  ConfigurableApplicationContext applicationContext;
+    ConfigurableApplicationContext applicationContext;
 
-  @Override
-  public void execute(@NotNull List<String> args) {
-    applicationContext.close();
-    System.exit(0);
-  }
+    @Override
+    public void execute(@NotNull List<String> args) {
+        applicationContext.close();
+        System.exit(0);
+    }
 }
