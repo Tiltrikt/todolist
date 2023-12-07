@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 @Getter
+@Component
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RuntimeTaskService implements TaskService {
 
-    List<Task> taskList = new ArrayList<>();
+    private final List<Task> taskList = new ArrayList<>();
 
     public @Nullable Task getById(int id) {
         return taskList.stream()

@@ -3,6 +3,7 @@ package dev.tiltrikt.todolist.service.task;
 import dev.tiltrikt.todolist.Task;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
