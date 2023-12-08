@@ -6,6 +6,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = "dev.tiltrikt.todolist")
 public class TodolistApplication {
 
+  /*TODO
+    Postman
+    1) REST. Стандарт нейминга эндпоинтов контроллера. GET POST PUT DELETE UPDATE CREATE
+    2) Spring Data (JDBC Template, JPA)
+    4) com.github.dozermapper (Автомаппер)
+    3) Контроллеры: TaskController:
+      /v1/tasks - вернуть все задачи
+      /v1/tasks/active - вернуть активные задачи
+      /v1/tasks/finished - вернуть активные задачи
+      /v1/tasks/ - добавить задачу
+      /v1/tasks/ - отредактировать задачу
+      /v1/tasks/ - удалить задачу
+    4) Профили приложения dev, debug, prod, postgres, mysql
+   */
   public static void main(String[] args) {
     SpringApplication.run(TodolistApplication.class, args);
   }
