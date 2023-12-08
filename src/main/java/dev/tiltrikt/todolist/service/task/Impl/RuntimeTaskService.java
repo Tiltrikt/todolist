@@ -32,6 +32,7 @@ public class RuntimeTaskService implements TaskService {
     taskList.add(task);
   }
 
+  @SuppressWarnings("DataFlowIssue")
   public void finishTask(int id) {
     getById(id).finish();
   }
