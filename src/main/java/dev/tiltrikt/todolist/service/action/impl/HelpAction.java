@@ -13,9 +13,9 @@ public class HelpAction implements ActionService {
     public void execute(@NotNull List<String> args) {
         System.out.println("Usage info:");
         System.out.println("help -> shows this information");
-        System.out.println("add -> add task to todolist");
+        System.out.println("add + {task id} + {text} -> add task to todolist");
         System.out.println("finish -> finish task in todolist");
         System.out.println("active -> display all active tasks");
-        System.out.println("finished -> display all finished tasks");
+        System.out.println("finished + {task id} -> display all finished tasks");
     }
 }

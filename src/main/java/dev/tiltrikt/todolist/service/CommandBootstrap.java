@@ -27,7 +27,6 @@ public class CommandBootstrap implements CommandLineRunner {
   public void run(String @NotNull ... args) {
     handleAction(List.of("help"));
     while (true) {
-      handleAction(List.of("printCommandLinePrompt"));
       String line = scanner.nextLine();
       List<String> arguments = Arrays.stream(line.split(" "))
           .toList();
