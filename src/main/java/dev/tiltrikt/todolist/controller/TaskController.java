@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1")
@@ -45,9 +46,12 @@ public class TaskController {
 
     @PutMapping("/tasks/update")
     public void updateTask(@RequestBody Map<String, String> info) {
-        Task task = taskRepository.getById(Integer.parseInt(info.get("id")));
-        task.setActive(Boolean.parseBoolean(info.get("active")));
-        taskRepository.save(task);
+        Optional<Task> task = taskRepository.findById(Integer.parseInt(info.get("id")));
+        task.ifPresent(task1 -> {
+            task1.setActive(Boolean.parseBoolean(info.get("active")));
+            taskRepository.save(task1);
+        });
+
     }
 
     @DeleteMapping("/tasks/delete")
