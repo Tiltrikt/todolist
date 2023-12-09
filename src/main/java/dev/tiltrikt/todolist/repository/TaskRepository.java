@@ -10,5 +10,4 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<Task, Integer> {
     List<Task> findByActive(boolean state);
     void deleteById(int id);
-//    boolean updateById(int id);
 }

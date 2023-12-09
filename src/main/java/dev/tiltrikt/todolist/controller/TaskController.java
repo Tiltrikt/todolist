@@ -46,8 +46,8 @@ public class TaskController {
     }
 
     @PutMapping("/tasks/update")
-    public void updateTask(@RequestBody int id) {
-//        taskRepository.updateById(id);
+    public void updateTask(@RequestBody Map<String, String> active) {
+
     }
 
     @DeleteMapping("/tasks/delete")
