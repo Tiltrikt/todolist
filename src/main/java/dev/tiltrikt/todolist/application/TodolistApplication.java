@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = "dev.tiltrikt.todolist")
 public class TodolistApplication {
 
-  /*TODO
+  /* TODO: 08.12.2023
     Postman
     1) REST. Стандарт нейминга эндпоинтов контроллера. GET POST PUT DELETE UPDATE CREATE
     2) Spring Data (JDBC Template, JPA)
@@ -20,6 +20,7 @@ public class TodolistApplication {
       /v1/tasks/ - удалить задачу
     4) Профили приложения dev, debug, prod, postgres, mysql
    */
+
   public static void main(String[] args) {
     SpringApplication.run(TodolistApplication.class, args);
   }
