@@ -4,8 +4,6 @@ import dev.tiltrikt.todolist.model.Task;
 import dev.tiltrikt.todolist.repository.TaskRepository;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,16 +36,18 @@ public class TaskController {
     }
 
     @PostMapping("/tasks/add")
-    public void addTask(@RequestBody Map<String, String> task) {
+    public void addTask(@RequestBody Map<String, String> info) {
         taskRepository.save(Task.builder()
-                .id(Integer.parseInt(task.get("id")))
-                .text(task.get("text"))
+                .id(Integer.parseInt(info.get("id")))
+                .text(info.get("text"))
                 .build());
     }
 
     @PutMapping("/tasks/update")
-    public void updateTask(@RequestBody Map<String, String> active) {
-
+    public void updateTask(@RequestBody Map<String, String> info) {
+        Task task = taskRepository.getById(Integer.parseInt(info.get("id")));
+        task.setActive(Boolean.parseBoolean(info.get("active")));
+        taskRepository.save(task);
     }
 
     @DeleteMapping("/tasks/delete")
