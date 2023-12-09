@@ -1,0 +1,39 @@
+openapi: 3.0.3
+info:
+  description: todolist API
+  title: todolist API
+  version: 1.0.0
+servers:
+- url: https://todolist
+paths:
+  /v1/tasks:
+    get:
+      operationId: getAll
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/Task'
+                type: array
+          description: OK
+      summary: GET v1/tasks
+      x-accepts: '*/*'
+components:
+  schemas:
+    Task:
+      example:
+        active: true
+        id: 0
+        text: text
+      properties:
+        id:
+          format: int32
+          type: integer
+        text:
+          type: string
+        active:
+          type: boolean
+      type: object
+
