@@ -11,7 +11,7 @@ import lombok.experimental.NonFinal;
 @Data
 @Builder
 @AllArgsConstructor
-@Table(name = "tasklist")
+@Table(name = "task_list")
 @NoArgsConstructor(force = true)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class Task {
