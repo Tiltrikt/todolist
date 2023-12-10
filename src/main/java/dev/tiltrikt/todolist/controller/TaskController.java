@@ -1,61 +1,49 @@
 package dev.tiltrikt.todolist.controller;
 
 import dev.tiltrikt.todolist.model.Task;
-import dev.tiltrikt.todolist.repository.TaskRepository;
+import dev.tiltrikt.todolist.service.TaskService;
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v${app.version}/tasks")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TaskController {
 
-    TaskRepository taskRepository;
-
-    public TaskController(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
+    TaskService taskService;
 
     @GetMapping()
     public List<Task> getAll() {
-        return taskRepository.findAll();
+        return taskService.getAll();
     }
 
     @GetMapping("/active")
     public List<Task> getActive() {
-        return taskRepository.findByActive(true);
+        return taskService.getByActive(true);
     }
 
     @GetMapping("/finished")
     public List<Task> getFinished() {
-        return taskRepository.findByActive(false);
+        return taskService.getByActive(false);
     }
 
     @PostMapping("/add")
-    public void addTask(@RequestBody Map<String, String> info) {
-        taskRepository.save(Task.builder()
-                .id(Integer.parseInt(info.get("id")))
-                .text(info.get("text"))
-                .build());
+    public void addTask(@RequestBody Task task) {
+        taskService.add(task);
     }
 
     @PutMapping("/update")
-    public void updateTask(@RequestBody Map<String, String> info) {
-        Optional<Task> task = taskRepository.findById(Integer.parseInt(info.get("id")));
-        task.ifPresent(task1 -> {
-            task1.setActive(Boolean.parseBoolean(info.get("active")));
-            taskRepository.save(task1);
-        });
-
+    public void updateTask(@RequestBody Integer id) {
+        taskService.update(id);
     }
 
     @DeleteMapping("/delete")
     public void deleteTask(@RequestBody Integer id) {
-        taskRepository.deleteById(id);
+        taskService.delete(id);
     }
 }
