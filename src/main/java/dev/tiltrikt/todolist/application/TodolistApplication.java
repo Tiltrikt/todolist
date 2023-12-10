@@ -3,11 +3,13 @@ package dev.tiltrikt.todolist.application;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = "dev.tiltrikt.todolist")
-@EnableJpaRepositories(basePackages="dev.tiltrikt.todolist")
-@EntityScan(basePackages="dev.tiltrikt.todolist")
+@EnableJpaRepositories(basePackages = "dev.tiltrikt.todolist")
+@EntityScan(basePackages = "dev.tiltrikt.todolist")
+@PropertySource("classpath:version.yml")
 public class TodolistApplication {
 
   /* TODO: 08.12.2023
@@ -25,8 +27,7 @@ public class TodolistApplication {
     4) Профили приложения dev, debug, prod, postgres, mysql
    */
 
-  public static void main(String[] args) {
-    SpringApplication.run(TodolistApplication.class, args);
-
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(TodolistApplication.class, args);
+    }
 }

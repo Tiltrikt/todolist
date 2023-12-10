@@ -11,32 +11,32 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v${app.version}/tasks")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TaskController {
 
-    private final TaskRepository taskRepository;
+    TaskRepository taskRepository;
 
     public TaskController(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
-    @GetMapping("/tasks")
+    @GetMapping()
     public List<Task> getAll() {
         return taskRepository.findAll();
     }
 
-    @GetMapping("/tasks/active")
+    @GetMapping("/active")
     public List<Task> getActive() {
         return taskRepository.findByActive(true);
     }
 
-    @GetMapping("/tasks/finished")
+    @GetMapping("/finished")
     public List<Task> getFinished() {
         return taskRepository.findByActive(false);
     }
 
-    @PostMapping("/tasks/add")
+    @PostMapping("/add")
     public void addTask(@RequestBody Map<String, String> info) {
         taskRepository.save(Task.builder()
                 .id(Integer.parseInt(info.get("id")))
@@ -44,7 +44,7 @@ public class TaskController {
                 .build());
     }
 
-    @PutMapping("/tasks/update")
+    @PutMapping("/update")
     public void updateTask(@RequestBody Map<String, String> info) {
         Optional<Task> task = taskRepository.findById(Integer.parseInt(info.get("id")));
         task.ifPresent(task1 -> {
@@ -54,7 +54,7 @@ public class TaskController {
 
     }
 
-    @DeleteMapping("/tasks/delete")
+    @DeleteMapping("/delete")
     public void deleteTask(@RequestBody Integer id) {
         taskRepository.deleteById(id);
     }
