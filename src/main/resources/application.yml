@@ -3,3 +3,6 @@ spring:
     banner-mode: off
   profiles:
     active: mysql
+  jpa:
+    hibernate:
+      ddl-auto: update
