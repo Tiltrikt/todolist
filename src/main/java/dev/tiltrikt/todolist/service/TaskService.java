@@ -1,14 +1,14 @@
 package dev.tiltrikt.todolist.service;
 
-import dev.tiltrikt.todolist.model.Task;
+import dev.tiltrikt.todolist.dto.TaskDTO;
 
 import java.util.List;
 
 public interface TaskService {
 
-    List<Task> getAll();
-    List<Task> getByActive(boolean active);
-    void update(int id);
-    void delete(int id);
-    void add(Task task);
+    List<TaskDTO> getAll();
+    List<TaskDTO> getByActive(boolean active);
+    boolean update(int id);
+    boolean delete(int id);
+    boolean add(TaskDTO taskDTO);
 }

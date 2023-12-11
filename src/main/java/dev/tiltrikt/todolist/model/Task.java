@@ -1,12 +1,10 @@
 package dev.tiltrikt.todolist.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 
 @Entity
 @Data
@@ -14,7 +12,7 @@ import lombok.experimental.NonFinal;
 @AllArgsConstructor
 @Table(name = "task_list")
 @NoArgsConstructor(force = true)
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Task {
 
     @Id
@@ -22,7 +20,6 @@ public class Task {
 
     String text;
 
-    @NonFinal
     @Builder.Default
     boolean active = true;
 

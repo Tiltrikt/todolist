@@ -1,10 +1,13 @@
 package dev.tiltrikt.todolist.controller;
 
-import dev.tiltrikt.todolist.model.Task;
+import dev.tiltrikt.todolist.dto.TaskDTO;
 import dev.tiltrikt.todolist.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,32 +21,51 @@ public class TaskController {
     TaskService taskService;
 
     @GetMapping()
-    public List<Task> getAll() {
-        return taskService.getAll();
+    public ResponseEntity<List<TaskDTO>> getAll() {
+        List<TaskDTO> taskList = taskService.getAll();
+
+        return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
 
     @GetMapping("/active")
-    public List<Task> getActive() {
-        return taskService.getByActive(true);
+    public ResponseEntity<List<TaskDTO>> getActive() {
+        List<TaskDTO> taskList = taskService.getByActive(true);
+
+        return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
 
     @GetMapping("/finished")
-    public List<Task> getFinished() {
-        return taskService.getByActive(false);
+    public ResponseEntity<List<TaskDTO>> getFinished() {
+        List<TaskDTO> taskList = taskService.getByActive(true);
+
+        return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public void addTask(@RequestBody Task task) {
-        taskService.add(task);
+    public ResponseEntity<?> addTask(@Valid @RequestBody TaskDTO task) {
+        boolean isAdded = taskService.add(task);
+
+        return isAdded ?
+                new ResponseEntity<>(HttpStatus.CREATED) :
+                new ResponseEntity<>(HttpStatus.FOUND);
     }
 
-    @PutMapping("/update")
-    public void updateTask(@RequestBody Integer id) {
-        taskService.update(id);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateTask(@PathVariable int id) {
+        boolean isUpdated = taskService.update(id);
+
+        return isUpdated ?
+                new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/delete")
-    public void deleteTask(@RequestBody Integer id) {
-        taskService.delete(id);
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteTask(@PathVariable int id) {
+        boolean isDeleted = taskService.delete(id);
+
+        return isDeleted ?
+                new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

@@ -1,5 +1,7 @@
 package dev.tiltrikt.todolist.service.Impl;
 
+import com.github.dozermapper.core.Mapper;
+import dev.tiltrikt.todolist.dto.TaskDTO;
 import dev.tiltrikt.todolist.model.Task;
 import dev.tiltrikt.todolist.repository.TaskRepository;
 import dev.tiltrikt.todolist.service.TaskService;
@@ -18,35 +20,52 @@ public class TaskServiceImpl implements TaskService {
 
     TaskRepository taskRepository;
 
+    Mapper mapper;
+
     @Override
-    public List<Task> getAll() {
-        return taskRepository.findAll();
+    public List<TaskDTO> getAll() {
+        return taskRepository.findAll().stream()
+                .map((task) -> mapper.map(task, TaskDTO.class))
+                .toList();
     }
 
     @Override
-    public List<Task> getByActive(boolean active) {
-        return taskRepository.findByActive(active);
+    public List<TaskDTO> getByActive(boolean active) {
+        return taskRepository.findByActive(active).stream()
+                .map((task) -> mapper.map(task, TaskDTO.class))
+                .toList();
     }
 
     @Override
-    public void update(int id) {
-        Optional<Task> task = taskRepository.findById(id);
-        task.ifPresent(t -> {
-            t.setActive(!t.isActive());
-            taskRepository.save(t);
-        });
-    }
-
-    @Override
-    public void delete(int id) {
-        Optional<Task> task = taskRepository.findById(id);
-        task.ifPresent(taskRepository::delete);
-    }
-
-    @Override
-    public void add(Task task) {
-        Optional<Task> optionalTask = taskRepository.findById(task.getId());
-        if(optionalTask.isEmpty())
+    public boolean update(int id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            task.setActive(!task.isActive());
             taskRepository.save(task);
+            return true;
+        } else
+            return false;
+    }
+
+    @Override
+    public boolean delete(int id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        if (optionalTask.isPresent()) {
+            taskRepository.delete(optionalTask.get());
+            return true;
+        } else
+            return false;
+    }
+
+    @Override
+    public boolean add(TaskDTO taskDTO) {
+        Task task = mapper.map(taskDTO, Task.class);
+        Optional<Task> optionalTask = taskRepository.findById(task.getId());
+        if (optionalTask.isEmpty()) {
+            taskRepository.save(task);
+            return true;
+        } else
+            return false;
     }
 }
