@@ -12,7 +12,6 @@ import lombok.experimental.FieldDefaults;
 import static lombok.AccessLevel.PRIVATE;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @FieldDefaults(level = PRIVATE)

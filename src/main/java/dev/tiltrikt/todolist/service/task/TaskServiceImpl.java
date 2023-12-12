@@ -1,10 +1,10 @@
-package dev.tiltrikt.todolist.service.Impl;
+package dev.tiltrikt.todolist.service.task;
 
 import com.github.dozermapper.core.Mapper;
 import dev.tiltrikt.todolist.dto.TaskDTO;
 import dev.tiltrikt.todolist.model.Task;
 import dev.tiltrikt.todolist.repository.TaskRepository;
-import dev.tiltrikt.todolist.service.TaskService;
+import dev.tiltrikt.todolist.service.task.TaskService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

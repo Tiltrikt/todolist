@@ -1,7 +1,7 @@
-package dev.tiltrikt.todolist.controller;
+package dev.tiltrikt.todolist.controller.v1;
 
 import dev.tiltrikt.todolist.dto.TaskDTO;
-import dev.tiltrikt.todolist.service.TaskService;
+import dev.tiltrikt.todolist.service.task.TaskService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v${app.version}/tasks")
+@RequestMapping("/v1/tasks")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TaskController {
 
@@ -23,21 +23,18 @@ public class TaskController {
     @GetMapping()
     public ResponseEntity<List<TaskDTO>> getAll() {
         List<TaskDTO> taskList = taskService.getAll();
-
         return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
 
     @GetMapping("/active")
     public ResponseEntity<List<TaskDTO>> getActive() {
         List<TaskDTO> taskList = taskService.getByActive(true);
-
         return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
 
     @GetMapping("/finished")
     public ResponseEntity<List<TaskDTO>> getFinished() {
         List<TaskDTO> taskList = taskService.getByActive(true);
-
         return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
 

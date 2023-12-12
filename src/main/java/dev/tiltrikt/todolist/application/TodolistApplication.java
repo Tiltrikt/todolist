@@ -7,9 +7,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = "dev.tiltrikt.todolist")
-@EnableJpaRepositories(basePackages = "dev.tiltrikt.todolist")
-@EntityScan(basePackages = "dev.tiltrikt.todolist")
-@PropertySource("classpath:version.yml")
+@EnableJpaRepositories(basePackages = "dev.tiltrikt.todolist.repository")
+@EntityScan(basePackages = "dev.tiltrikt.todolist.model")
 public class TodolistApplication {
 
   /* TODO: 08.12.2023
