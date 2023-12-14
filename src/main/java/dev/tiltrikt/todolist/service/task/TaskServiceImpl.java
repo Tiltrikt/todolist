@@ -1,18 +1,21 @@
 package dev.tiltrikt.todolist.service.task;
 
 import com.github.dozermapper.core.Mapper;
-import dev.tiltrikt.todolist.dto.TaskDTO;
+import dev.tiltrikt.todolist.exception.TaskNotFoundException;
 import dev.tiltrikt.todolist.model.Task;
+import dev.tiltrikt.todolist.request.TaskAddRequest;
 import dev.tiltrikt.todolist.repository.TaskRepository;
-import dev.tiltrikt.todolist.service.task.TaskService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -23,49 +26,60 @@ public class TaskServiceImpl implements TaskService {
     Mapper mapper;
 
     @Override
-    public List<TaskDTO> getAll() {
-        return taskRepository.findAll().stream()
-                .map((task) -> mapper.map(task, TaskDTO.class))
-                .toList();
+    @NotNull
+    public List<Task> getAll() {
+        List<Task> taskList = taskRepository.findAll();
+
+        log.debug("from database were returned taskList: {}", taskList);
+        return taskList;
     }
 
     @Override
-    public List<TaskDTO> getByActive(boolean active) {
-        return taskRepository.findByActive(active).stream()
-                .map((task) -> mapper.map(task, TaskDTO.class))
-                .toList();
+    @NotNull
+    public List<Task> getByActive(boolean active) {
+        List<Task> taskList = taskRepository.findByActive(active);
+
+        log.debug("from database were returned taskList: {}", taskList);
+        return taskList;
     }
 
     @Override
-    public boolean update(int id) {
+    public void update(int id) {
         Optional<Task> optionalTask = taskRepository.findById(id);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             task.setActive(!task.isActive());
             taskRepository.save(task);
-            return true;
-        } else
-            return false;
+            log.debug("task with id: {}, active state was changed from {} to {}",
+                    task.getId(), !task.isActive(), task.isActive());
+        } else {
+            log.debug("task with id: {} wasn't found", id);
+            throw new TaskNotFoundException(String.format("task with id %d wasn't found", id));
+        }
     }
 
     @Override
-    public boolean delete(int id) {
+    public void delete(int id) {
         Optional<Task> optionalTask = taskRepository.findById(id);
         if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
             taskRepository.delete(optionalTask.get());
-            return true;
-        } else
-            return false;
+            log.debug("task {} was successfully deleted from database", task);
+        } else {
+            log.debug("task with id: {} wasn't found", id);
+            throw new TaskNotFoundException(String.format("task with id %d wasn't found", id));
+        }
     }
 
     @Override
-    public boolean add(TaskDTO taskDTO) {
-        Task task = mapper.map(taskDTO, Task.class);
+    public void add(@NotNull TaskAddRequest request) {
+        Task task = mapper.map(request, Task.class);
         Optional<Task> optionalTask = taskRepository.findById(task.getId());
         if (optionalTask.isEmpty()) {
             taskRepository.save(task);
-            return true;
-        } else
-            return false;
+            log.debug("task {} was added to database", task);
+        } else {
+            log.debug("task with id {} already exists: {}", task.getId(), optionalTask.get());
+        }
     }
 }

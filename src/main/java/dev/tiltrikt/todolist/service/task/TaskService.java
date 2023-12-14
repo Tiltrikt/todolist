@@ -1,18 +1,20 @@
 package dev.tiltrikt.todolist.service.task;
 
-import dev.tiltrikt.todolist.dto.TaskDTO;
+import dev.tiltrikt.todolist.model.Task;
+import dev.tiltrikt.todolist.request.TaskAddRequest;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public interface TaskService {
 
-    List<TaskDTO> getAll();
+    @NotNull List<Task> getAll();
 
-    List<TaskDTO> getByActive(boolean active);
+    @NotNull List<Task> getByActive(boolean active);
 
-    boolean update(int id);
+    void update(int id);
 
-    boolean delete(int id);
+    void delete(int id);
 
-    boolean add(TaskDTO taskDTO);
+    void add(@NotNull TaskAddRequest request);
 }

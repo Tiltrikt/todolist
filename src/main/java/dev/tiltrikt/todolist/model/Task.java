@@ -1,8 +1,6 @@
 package dev.tiltrikt.todolist.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,23 +9,25 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
-@Table(schema = "todoilist", name = "tasks")
+@Table(schema = "todolist", name = "tasks")
 @NoArgsConstructor(force = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Task {
 
-  @Id
-  int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
 
-  @NotNull
-  String text;
+    @NotNull
+    String text;
 
-  @Builder.Default
-  boolean active = true;
+    @Builder.Default
+    boolean active = true;
 
 }
 

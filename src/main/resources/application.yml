@@ -9,7 +9,7 @@ spring:
     banner-mode: off
 
   profiles:
-    active: mysql
+    active: postgres, debug
 
   jpa:
     hibernate:
