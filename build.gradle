@@ -11,6 +11,10 @@ java {
     sourceCompatibility = '17'
 }
 
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
 dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
@@ -22,9 +26,10 @@ dependencies {
     implementation 'org.jetbrains:annotations:24.0.0'
 
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
-    runtimeOnly 'org.postgresql:postgresql:42.7.1'
-
+    runtimeOnly 'org.postgresql:postgresql'
 
     implementation 'com.github.dozermapper:dozer-core:6.5.2'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
