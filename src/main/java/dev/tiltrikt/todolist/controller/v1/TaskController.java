@@ -34,7 +34,7 @@ public class TaskController {
         return new ResponseEntity<>(UniverseResponse.<List<Task>>builder()
                 .payload(taskList)
                 .build(),
-                HttpStatus.CREATED
+                HttpStatus.OK
         );
     }
 
@@ -42,12 +42,12 @@ public class TaskController {
     @GetMapping("/active")
     public ResponseEntity<UniverseResponse<List<Task>>> getActive() {
         log.info("request to get active tasks");
-        List<Task> taskList = taskService.getByActive (true);
+        List<Task> taskList = taskService.getByActive(true);
 
         return new ResponseEntity<>(UniverseResponse.<List<Task>>builder()
-                        .payload(taskList)
-                        .build(),
-                        HttpStatus.CREATED
+                .payload(taskList)
+                .build(),
+                HttpStatus.OK
         );
     }
 
@@ -60,7 +60,7 @@ public class TaskController {
         return new ResponseEntity<>(UniverseResponse.<List<Task>>builder()
                 .payload(taskList)
                 .build(),
-                HttpStatus.CREATED
+                HttpStatus.OK
         );
     }
 
@@ -75,7 +75,7 @@ public class TaskController {
 
     @NotNull
     @PutMapping("/update/{id}")
-    public ResponseEntity<UniverseResponse<String>> updateTask(@PathVariable int id) {
+    public ResponseEntity<UniverseResponse<String>> updateTask(@Valid @PathVariable int id) {
         log.info("request to update task");
         taskService.update(id);
 
