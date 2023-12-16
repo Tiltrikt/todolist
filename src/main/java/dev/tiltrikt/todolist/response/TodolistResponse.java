@@ -31,7 +31,7 @@ public class TodolistResponse<T> {
     @NotNull
     public static ResponseEntity<TodolistResponse<String>> ok(@NotNull HttpStatus httpStatus) {
 
-        return new ResponseEntity<>(new TodolistResponse<String>(), httpStatus);
+        return new ResponseEntity<>(new TodolistResponse<>(), httpStatus);
     }
 
     @NotNull

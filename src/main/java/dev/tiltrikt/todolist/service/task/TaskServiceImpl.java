@@ -41,8 +41,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void update(int id, TaskChangeRequest request) {
-//        log.debug("task with id: {}, active state was changed from {} to {}",
-//                task.getId(), !task.isActive(), task.isActive());
         Task task = taskRepository
                 .findById(id)
                 .orElseThrow(() -> new TaskException(String.format("task with id %d wasn't found", id)));
