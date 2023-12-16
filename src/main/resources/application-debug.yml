@@ -1,3 +1,6 @@
 logging:
   level:
     dev.tiltrikt.todolist: DEBUG
+    org.springframework.boot.autoconfigure.logging: INFO
+
+debug: true

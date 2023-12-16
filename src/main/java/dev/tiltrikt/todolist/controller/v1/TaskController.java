@@ -28,7 +28,6 @@ public class TaskController {
     @NotNull
     @GetMapping()
     public ResponseEntity<UniverseResponse<List<Task>>> getAll() {
-        log.info("request to get all tasks");
         List<Task> taskList = taskService.getAll();
 
         return new ResponseEntity<>(UniverseResponse.<List<Task>>builder()
@@ -41,7 +40,6 @@ public class TaskController {
     @NotNull
     @GetMapping("/active")
     public ResponseEntity<UniverseResponse<List<Task>>> getActive() {
-        log.info("request to get active tasks");
         List<Task> taskList = taskService.getByActive(true);
 
         return new ResponseEntity<>(UniverseResponse.<List<Task>>builder()
@@ -54,7 +52,6 @@ public class TaskController {
     @NotNull
     @GetMapping("/finished")
     public ResponseEntity<UniverseResponse<List<Task>>> getFinished() {
-        log.info("request to get finished tasks");
         List<Task> taskList = taskService.getByActive(false);
 
         return new ResponseEntity<>(UniverseResponse.<List<Task>>builder()
@@ -67,7 +64,6 @@ public class TaskController {
     @NotNull
     @PostMapping("/add")
     public ResponseEntity<UniverseResponse<String>> addTask(@Valid @RequestBody TaskAddRequest request) {
-        log.info("request to add task");
         taskService.add(request);
 
         return new ResponseEntity<>(new UniverseResponse<>(), HttpStatus.CREATED);
@@ -76,7 +72,6 @@ public class TaskController {
     @NotNull
     @PutMapping("/update/{id}")
     public ResponseEntity<UniverseResponse<String>> updateTask(@Valid @PathVariable int id) {
-        log.info("request to update task");
         taskService.update(id);
 
         return new ResponseEntity<>(new UniverseResponse<>(), HttpStatus.OK);
@@ -85,7 +80,6 @@ public class TaskController {
     @NotNull
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<UniverseResponse<String>> deleteTask(@PathVariable int id) {
-        log.info("request to delete task");
         taskService.delete(id);
 
         return new ResponseEntity<>(new UniverseResponse<>(), HttpStatus.OK);

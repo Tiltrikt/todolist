@@ -28,19 +28,15 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @NotNull
     public List<Task> getAll() {
-        List<Task> taskList = taskRepository.findAll();
 
-        log.debug("from database were returned taskList: {}", taskList);
-        return taskList;
+        return taskRepository.findAll();
     }
 
     @Override
     @NotNull
     public List<Task> getByActive(boolean active) {
-        List<Task> taskList = taskRepository.findByActive(active);
 
-        log.debug("from database were returned taskList: {}", taskList);
-        return taskList;
+        return taskRepository.findByActive(active);
     }
 
     @Override
@@ -53,7 +49,6 @@ public class TaskServiceImpl implements TaskService {
             log.debug("task with id: {}, active state was changed from {} to {}",
                     task.getId(), !task.isActive(), task.isActive());
         } else {
-            log.debug("task with id: {} wasn't found", id);
             throw new TaskNotFoundException(String.format("task with id %d wasn't found", id));
         }
     }
@@ -64,9 +59,7 @@ public class TaskServiceImpl implements TaskService {
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             taskRepository.delete(optionalTask.get());
-            log.debug("task {} was successfully deleted from database", task);
         } else {
-            log.debug("task with id: {} wasn't found", id);
             throw new TaskNotFoundException(String.format("task with id %d wasn't found", id));
         }
     }
@@ -77,7 +70,6 @@ public class TaskServiceImpl implements TaskService {
         Optional<Task> optionalTask = taskRepository.findById(task.getId());
         if (optionalTask.isEmpty()) {
             taskRepository.save(task);
-            log.debug("task {} was added to database", task);
         } else {
             log.debug("task with id {} already exists: {}", task.getId(), optionalTask.get());
         }

@@ -42,7 +42,6 @@ public class ControllerExceptionHandler {
         for (FieldError fieldError:  ex.getFieldErrors()) {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        errors.forEach((key, value) -> log.info("{}: {}", key, value));
 
         UniverseResponse<String> response = UniverseResponse.<String>builder()
                 .errors(errors)
