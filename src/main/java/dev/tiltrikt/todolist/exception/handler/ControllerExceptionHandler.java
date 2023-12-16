@@ -1,8 +1,8 @@
-package dev.tiltrikt.todolist.exceptionhandler;
+package dev.tiltrikt.todolist.exception.handler;
 
+import dev.tiltrikt.todolist.exception.TodolistException;
 import dev.tiltrikt.todolist.model.Task;
-import dev.tiltrikt.todolist.response.UniverseResponse;
-import dev.tiltrikt.todolist.exception.TaskNotFoundException;
+import dev.tiltrikt.todolist.response.TodolistResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -20,34 +20,37 @@ import java.util.*;
 public class ControllerExceptionHandler {
 
     @NotNull
-    @ExceptionHandler(TaskNotFoundException.class)
+    @ExceptionHandler(TodolistException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<UniverseResponse<Task>> taskNotFoundException(TaskNotFoundException ex) {
+    public ResponseEntity<TodolistResponse<String>> todolistException(TodolistException ex) {
+
         Map<String, String> errors = new TreeMap<>();
         errors.put("exception", ex.getMessage());
 
-        UniverseResponse<Task> universeResponse = UniverseResponse.<Task>builder()
-                .errors(errors)
-                .success(false)
-                .build();
-
-        return new ResponseEntity<>(universeResponse, HttpStatus.BAD_REQUEST);
+        return TodolistResponse.error(errors, HttpStatus.BAD_REQUEST);
     }
 
     @NotNull
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<UniverseResponse<String>> NotValidField(MethodArgumentNotValidException ex) {
+    public ResponseEntity<TodolistResponse<String>> notValidField(MethodArgumentNotValidException ex) {
+
         Map<String, String> errors = new TreeMap<>();
         for (FieldError fieldError:  ex.getFieldErrors()) {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
 
-        UniverseResponse<String> response = UniverseResponse.<String>builder()
-                .errors(errors)
-                .success(false)
-                .build();
+        return TodolistResponse.error(errors, HttpStatus.BAD_REQUEST);
+    }
 
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    @NotNull
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<TodolistResponse<String>> internalServerError() {
+
+        Map<String, String> errors = new TreeMap<>();
+        errors.put("exception", "Internal server error");
+
+        return TodolistResponse.error(errors, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

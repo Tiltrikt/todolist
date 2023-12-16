@@ -1,10 +1,11 @@
 package dev.tiltrikt.todolist.service.task;
 
 import com.github.dozermapper.core.Mapper;
-import dev.tiltrikt.todolist.exception.TaskNotFoundException;
+import dev.tiltrikt.todolist.exception.TaskException;
 import dev.tiltrikt.todolist.model.Task;
 import dev.tiltrikt.todolist.request.TaskAddRequest;
 import dev.tiltrikt.todolist.repository.TaskRepository;
+import dev.tiltrikt.todolist.request.TaskChangeRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -13,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -40,38 +40,30 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void update(int id) {
-        Optional<Task> optionalTask = taskRepository.findById(id);
-        if (optionalTask.isPresent()) {
-            Task task = optionalTask.get();
-            task.setActive(!task.isActive());
-            taskRepository.save(task);
-            log.debug("task with id: {}, active state was changed from {} to {}",
-                    task.getId(), !task.isActive(), task.isActive());
-        } else {
-            throw new TaskNotFoundException(String.format("task with id %d wasn't found", id));
-        }
+    public void update(int id, TaskChangeRequest request) {
+//        log.debug("task with id: {}, active state was changed from {} to {}",
+//                task.getId(), !task.isActive(), task.isActive());
+        Task task = taskRepository
+                .findById(id)
+                .orElseThrow(() -> new TaskException(String.format("task with id %d wasn't found", id)));
+
+        if(request.getText() != null) task.setText(request.getText());
+        if(request.getActive() != null) task.setActive(request.getActive());
+
+        taskRepository.save(task);
     }
 
     @Override
     public void delete(int id) {
-        Optional<Task> optionalTask = taskRepository.findById(id);
-        if (optionalTask.isPresent()) {
-            Task task = optionalTask.get();
-            taskRepository.delete(optionalTask.get());
-        } else {
-            throw new TaskNotFoundException(String.format("task with id %d wasn't found", id));
-        }
+
+        taskRepository.delete(taskRepository
+                .findById(id)
+                .orElseThrow(() -> new TaskException(String.format("task with id %d wasn't found", id))));
     }
 
     @Override
     public void add(@NotNull TaskAddRequest request) {
-        Task task = mapper.map(request, Task.class);
-        Optional<Task> optionalTask = taskRepository.findById(task.getId());
-        if (optionalTask.isEmpty()) {
-            taskRepository.save(task);
-        } else {
-            log.debug("task with id {} already exists: {}", task.getId(), optionalTask.get());
-        }
+
+        taskRepository.save(mapper.map(request, Task.class));
     }
 }

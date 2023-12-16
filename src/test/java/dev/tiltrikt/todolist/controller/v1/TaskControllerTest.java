@@ -7,9 +7,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.tiltrikt.todolist.application.TodolistApplication;
-import dev.tiltrikt.todolist.exception.TaskNotFoundException;
+import dev.tiltrikt.todolist.exception.TaskException;
 import dev.tiltrikt.todolist.model.Task;
 import dev.tiltrikt.todolist.request.TaskAddRequest;
+import dev.tiltrikt.todolist.request.TaskChangeRequest;
 import dev.tiltrikt.todolist.service.task.TaskService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +79,21 @@ class TaskControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.errors").isEmpty())
                 .andExpect(jsonPath("$.payload", hasSize(0)));
+    }
+
+    @Test
+    void onGettingAllWithUnknownRuntimeExceptionMustReturnInternalServerError() throws Exception {
+        when(taskService.getAll()).thenThrow(new RuntimeException());
+
+        Map<String, String> map = new TreeMap<>();
+        map.put("exception", "Internal server error");
+
+        mvc.perform(get("/v1/tasks"))
+                // General assertions
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.errors", equalTo(map)))
+                .andExpect(jsonPath("$.payload").isEmpty());
     }
 
     @Test
@@ -185,15 +202,20 @@ class TaskControllerTest {
         String taskJson = mapper.writeValueAsString(task);
 
         mvc.perform(post("/v1/tasks/add")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(taskJson));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(taskJson));
 
         verify(taskService, times(0)).add(task);
     }
 
     @Test
     void onUpdatingTaskWithIdThatExistsMustBeSuccess() throws Exception {
-        mvc.perform(put("/v1/tasks/update/1"))
+        TaskChangeRequest task = new TaskChangeRequest("work", true);
+        String taskJson = mapper.writeValueAsString(task);
+
+        mvc.perform(put("/v1/tasks/update/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(taskJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.errors").isEmpty())
@@ -201,12 +223,36 @@ class TaskControllerTest {
     }
 
     @Test
-    void onUpdatingTaskWithIdThatDoesntExistErrorMustBe() throws Exception {
-        doThrow(new TaskNotFoundException("task with id -1 wasn't found")).when(taskService).update(-1);
+    void onUpdatingTaskWithIdThatDoesntExistErrorMustBeReturned() throws Exception {
+        TaskChangeRequest task = new TaskChangeRequest("work", true);
+        String taskJson = mapper.writeValueAsString(task);
+
+        doThrow(new TaskException("task with id -1 wasn't found"))
+                .when(taskService).update(-1, new TaskChangeRequest("work", true));
+
         Map<String, String> map = new TreeMap<>();
         map.put("exception", "task with id -1 wasn't found");
 
-        mvc.perform(put("/v1/tasks/update/-1"))
+        mvc.perform(put("/v1/tasks/update/-1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(taskJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.errors", equalTo(map)))
+                .andExpect(jsonPath("$.payload").isEmpty());
+    }
+
+    @Test
+    void onUpdatingTaskWithEmptyChangeListErrorMustBeReturned() throws Exception {
+        TaskChangeRequest task = new TaskChangeRequest();
+        String taskJson = mapper.writeValueAsString(task);
+
+        Map<String, String> map = new TreeMap<>();
+        map.put("atLeastOneVariableNotEmpty", "At least one field must be not empty");
+
+        mvc.perform(put("/v1/tasks/update/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(taskJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.errors", equalTo(map)))
@@ -224,7 +270,7 @@ class TaskControllerTest {
 
     @Test
     void onDeletingTaskWithIdThatDoesntExistErrorMustBe() throws Exception {
-        doThrow(new TaskNotFoundException("task with id -1 wasn't found")).when(taskService).delete(-1);
+        doThrow(new TaskException("task with id -1 wasn't found")).when(taskService).delete(-1);
         Map<String, String> map = new TreeMap<>();
         map.put("exception", "task with id -1 wasn't found");
 

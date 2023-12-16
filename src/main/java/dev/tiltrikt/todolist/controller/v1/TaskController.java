@@ -2,7 +2,8 @@ package dev.tiltrikt.todolist.controller.v1;
 
 import dev.tiltrikt.todolist.model.Task;
 import dev.tiltrikt.todolist.request.TaskAddRequest;
-import dev.tiltrikt.todolist.response.UniverseResponse;
+import dev.tiltrikt.todolist.request.TaskChangeRequest;
+import dev.tiltrikt.todolist.response.TodolistResponse;
 import dev.tiltrikt.todolist.service.task.TaskService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -27,62 +28,51 @@ public class TaskController {
 
     @NotNull
     @GetMapping()
-    public ResponseEntity<UniverseResponse<List<Task>>> getAll() {
+    public ResponseEntity<TodolistResponse<List<Task>>> getAll() {
         List<Task> taskList = taskService.getAll();
 
-        return new ResponseEntity<>(UniverseResponse.<List<Task>>builder()
-                .payload(taskList)
-                .build(),
-                HttpStatus.OK
-        );
+        return TodolistResponse.ok(taskList, HttpStatus.OK);
     }
 
     @NotNull
     @GetMapping("/active")
-    public ResponseEntity<UniverseResponse<List<Task>>> getActive() {
+    public ResponseEntity<TodolistResponse<List<Task>>> getActive() {
         List<Task> taskList = taskService.getByActive(true);
 
-        return new ResponseEntity<>(UniverseResponse.<List<Task>>builder()
-                .payload(taskList)
-                .build(),
-                HttpStatus.OK
-        );
+        return TodolistResponse.ok(taskList, HttpStatus.OK);
     }
 
     @NotNull
     @GetMapping("/finished")
-    public ResponseEntity<UniverseResponse<List<Task>>> getFinished() {
+    public ResponseEntity<TodolistResponse<List<Task>>> getFinished() {
         List<Task> taskList = taskService.getByActive(false);
 
-        return new ResponseEntity<>(UniverseResponse.<List<Task>>builder()
-                .payload(taskList)
-                .build(),
-                HttpStatus.OK
-        );
+        return TodolistResponse.ok(taskList, HttpStatus.OK);
     }
 
     @NotNull
     @PostMapping("/add")
-    public ResponseEntity<UniverseResponse<String>> addTask(@Valid @RequestBody TaskAddRequest request) {
+    public ResponseEntity<TodolistResponse<String>> addTask(@Valid @RequestBody TaskAddRequest request) {
         taskService.add(request);
 
-        return new ResponseEntity<>(new UniverseResponse<>(), HttpStatus.CREATED);
+        return TodolistResponse.ok(HttpStatus.CREATED);
     }
 
     @NotNull
     @PutMapping("/update/{id}")
-    public ResponseEntity<UniverseResponse<String>> updateTask(@Valid @PathVariable int id) {
-        taskService.update(id);
+    public ResponseEntity<TodolistResponse<String>> updateTask(
+            @PathVariable int id, @Valid @RequestBody TaskChangeRequest request) {
+        taskService.update(id, request);
 
-        return new ResponseEntity<>(new UniverseResponse<>(), HttpStatus.OK);
+        return TodolistResponse.ok(HttpStatus.OK);
     }
 
     @NotNull
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<UniverseResponse<String>> deleteTask(@PathVariable int id) {
+    public ResponseEntity<TodolistResponse<String>> deleteTask(@PathVariable int id) {
         taskService.delete(id);
 
-        return new ResponseEntity<>(new UniverseResponse<>(), HttpStatus.OK);
+        return TodolistResponse.ok(HttpStatus.OK);
     }
 
 }
