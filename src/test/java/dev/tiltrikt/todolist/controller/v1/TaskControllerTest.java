@@ -222,6 +222,21 @@ class TaskControllerTest {
     }
 
     @Test
+    void onUpdatingTaskWithAtLeastOneFieldToBeChangedMustBeSuccess() throws Exception {
+        TaskChangeRequest task = new TaskChangeRequest();
+        task.setText("work");
+        String taskJson = mapper.writeValueAsString(task);
+
+        mvc.perform(put("/v1/tasks/update/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(taskJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.errors").isEmpty())
+                .andExpect(jsonPath("$.payload").isEmpty());
+    }
+
+    @Test
     void onUpdatingTaskWithIdThatDoesntExistErrorMustBeReturned() throws Exception {
         TaskChangeRequest task = new TaskChangeRequest("work", true);
         String taskJson = mapper.writeValueAsString(task);
