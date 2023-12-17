@@ -2,7 +2,6 @@ package dev.tiltrikt.todolist.exception.handler;
 
 import dev.tiltrikt.todolist.exception.TodolistException;
 import dev.tiltrikt.todolist.response.TodolistResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.*;
 
-@Slf4j
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
