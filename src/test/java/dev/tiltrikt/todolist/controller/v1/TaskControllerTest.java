@@ -7,13 +7,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.tiltrikt.todolist.application.TodolistApplication;
+import dev.tiltrikt.todolist.configuration.DozerConfiguration;
 import dev.tiltrikt.todolist.exception.TaskException;
+import dev.tiltrikt.todolist.exception.handler.ControllerExceptionHandler;
 import dev.tiltrikt.todolist.model.Task;
 import dev.tiltrikt.todolist.request.TaskAddRequest;
 import dev.tiltrikt.todolist.request.TaskChangeRequest;
 import dev.tiltrikt.todolist.service.task.TaskService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -29,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(TaskController.class)
-@ContextConfiguration(classes = TodolistApplication.class)
+@ContextConfiguration(classes = {TaskController.class, ControllerExceptionHandler.class})
 class TaskControllerTest {
 
     @MockBean
