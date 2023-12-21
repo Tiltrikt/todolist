@@ -4,8 +4,6 @@ import dev.tiltrikt.todolist.model.Task;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.List;
