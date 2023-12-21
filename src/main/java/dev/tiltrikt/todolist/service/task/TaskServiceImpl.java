@@ -38,28 +38,30 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void update(int id, TaskChangeRequest request) {
-        Task task = taskRepository
-                .findById(id)
-                .orElseThrow(() -> new TaskException(String.format("task with id %d wasn't found", id)));
+    public void update(int id, TaskChangeRequest request) throws TaskException {
+        Task task = getTask(id);
 
-        if(request.getText() != null) task.setText(request.getText());
-        if(request.getActive() != null) task.setActive(request.getActive());
+        if (request.getText() != null) task.setText(request.getText());
+        if (request.getActive() != null) task.setActive(request.getActive());
 
         taskRepository.save(task);
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws TaskException {
 
-        taskRepository.delete(taskRepository
-                .findById(id)
-                .orElseThrow(() -> new TaskException(String.format("task with id %d wasn't found", id))));
+        taskRepository.delete(getTask(id));
     }
 
     @Override
     public void add(@NotNull TaskAddRequest request) {
 
         taskRepository.save(mapper.map(request, Task.class));
+    }
+
+    private Task getTask(int id) throws TaskException{
+        return taskRepository
+                .findById(id)
+                .orElseThrow(() -> new TaskException(String.format("task with id %d wasn't found", id)));
     }
 }
