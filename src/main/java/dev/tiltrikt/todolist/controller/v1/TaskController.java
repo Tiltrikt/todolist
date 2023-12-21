@@ -26,51 +26,53 @@ public class TaskController {
 
     @NotNull
     @GetMapping()
-    public ResponseEntity<TodolistResponse<List<Task>>> getAll() {
+    public TodolistResponse<List<Task>> getAll() {
         List<Task> taskList = taskService.getAll();
 
-        return TodolistResponse.ok(taskList, HttpStatus.OK);
+        return TodolistResponse.ok(taskList);
+//        return TodolistResponse.ok(taskList, HttpStatus.OK);
     }
 
     @NotNull
     @GetMapping("/active")
-    public ResponseEntity<TodolistResponse<List<Task>>> getActive() {
+    public TodolistResponse<List<Task>> getActive() {
         List<Task> taskList = taskService.getByActive(true);
 
-        return TodolistResponse.ok(taskList, HttpStatus.OK);
+        return TodolistResponse.ok(taskList);
     }
 
     @NotNull
     @GetMapping("/finished")
-    public ResponseEntity<TodolistResponse<List<Task>>> getFinished() {
+    public TodolistResponse<List<Task>> getFinished() {
         List<Task> taskList = taskService.getByActive(false);
 
-        return TodolistResponse.ok(taskList, HttpStatus.OK);
+        return TodolistResponse.ok(taskList);
     }
 
     @NotNull
     @PostMapping("/add")
-    public ResponseEntity<TodolistResponse<String>> addTask(@Valid @RequestBody TaskAddRequest request) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public TodolistResponse<String> addTask(@Valid @RequestBody TaskAddRequest request) {
         taskService.add(request);
 
-        return TodolistResponse.ok(HttpStatus.CREATED);
+        return TodolistResponse.ok();
     }
 
     @NotNull
     @PutMapping("/update/{id}")
-    public ResponseEntity<TodolistResponse<String>> updateTask(
+    public TodolistResponse<String> updateTask(
             @PathVariable int id, @Valid @RequestBody TaskChangeRequest request) {
         taskService.update(id, request);
 
-        return TodolistResponse.ok(HttpStatus.OK);
+        return TodolistResponse.ok();
     }
 
     @NotNull
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<TodolistResponse<String>> deleteTask(@PathVariable int id) {
+    public TodolistResponse<String> deleteTask(@PathVariable int id) {
         taskService.delete(id);
 
-        return TodolistResponse.ok(HttpStatus.OK);
+        return TodolistResponse.ok();
     }
 
 }

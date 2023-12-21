@@ -29,33 +29,29 @@ public class TodolistResponse<T> {
     boolean success = true;
 
     @NotNull
-    public static ResponseEntity<TodolistResponse<String>> ok(@NotNull HttpStatus httpStatus) {
+    public static TodolistResponse<String> ok() {
 
-        return new ResponseEntity<>(new TodolistResponse<>(), httpStatus);
+        return new TodolistResponse<>();
     }
 
     @NotNull
-    public static ResponseEntity<TodolistResponse<List<Task>>> ok(
-            @NotNull List<Task> taskList,
-            @NotNull HttpStatus httpStatus) {
+    public static TodolistResponse<List<Task>> ok(
+            @NotNull List<Task> taskList) {
 
-        TodolistResponse<List<Task>> response = TodolistResponse.<List<Task>>builder()
+        return TodolistResponse.<List<Task>>builder()
                 .payload(taskList)
                 .build();
 
-        return new ResponseEntity<>(response, httpStatus);
     }
 
     @NotNull
-    public static ResponseEntity<TodolistResponse<String>> error(
-            @NotNull Map<String, String> errors,
-            @NotNull HttpStatus httpStatus) {
+    public static TodolistResponse<String> error(
+            @NotNull Map<String, String> errors) {
 
-        TodolistResponse<String> response = TodolistResponse.<String>builder()
+        return TodolistResponse.<String>builder()
                 .errors(errors)
                 .success(false)
                 .build();
 
-        return new ResponseEntity<>(response, httpStatus);
     }
 }
