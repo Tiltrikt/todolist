@@ -3,9 +3,9 @@ package dev.tiltrikt.todolist.service.task;
 import com.github.dozermapper.core.Mapper;
 import dev.tiltrikt.todolist.exception.TaskException;
 import dev.tiltrikt.todolist.model.Task;
-import dev.tiltrikt.todolist.request.TaskAddRequest;
+import dev.tiltrikt.todolist.dto.task.TaskAddRequest;
 import dev.tiltrikt.todolist.repository.TaskRepository;
-import dev.tiltrikt.todolist.request.TaskChangeRequest;
+import dev.tiltrikt.todolist.dto.task.TaskChangeRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class TaskServiceImpl implements TaskService {
+public class TaskServiceSingleUser implements TaskService {
 
     TaskRepository taskRepository;
 
@@ -60,6 +60,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private Task getTask(int id) throws TaskException{
+
         return taskRepository
                 .findById(id)
                 .orElseThrow(() -> new TaskException(String.format("task with id %d wasn't found", id)));

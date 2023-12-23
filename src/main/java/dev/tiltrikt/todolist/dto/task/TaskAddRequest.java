@@ -1,4 +1,4 @@
-package dev.tiltrikt.todolist.request;
+package dev.tiltrikt.todolist.dto.task;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package dev.tiltrikt.todolist.controller.v1;
+package dev.tiltrikt.todolist.controller.v2;
 
 import dev.tiltrikt.todolist.model.Task;
 import dev.tiltrikt.todolist.dto.task.TaskAddRequest;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("taskControllerV1")
+@RestController("taskControllerV2")
 @RequiredArgsConstructor
-@RequestMapping("/v1/tasks")
+@RequestMapping("/v2/tasks")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TaskController {
 

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
     @NotNull
@@ -28,6 +28,5 @@ public class Task {
 
     @Builder.Default
     boolean active = true;
-
 }
 

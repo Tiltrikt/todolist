@@ -5,8 +5,8 @@ import dev.tiltrikt.todolist.configuration.DozerConfiguration;
 import dev.tiltrikt.todolist.exception.TaskException;
 import dev.tiltrikt.todolist.model.Task;
 import dev.tiltrikt.todolist.repository.TaskRepository;
-import dev.tiltrikt.todolist.request.TaskAddRequest;
-import dev.tiltrikt.todolist.request.TaskChangeRequest;
+import dev.tiltrikt.todolist.dto.task.TaskAddRequest;
+import dev.tiltrikt.todolist.dto.task.TaskChangeRequest;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_CLASS;
 
 @DataJpaTest
-@ContextConfiguration(classes = {TaskRepository.class, TaskServiceImpl.class, DozerConfiguration.class})
+@ContextConfiguration(classes = {TaskRepository.class, TaskServiceSingleUser.class, DozerConfiguration.class})
 @EnableJpaRepositories(basePackages = {"dev.tiltrikt.todolist.repository"})
 @EntityScan("dev.tiltrikt.todolist.model")
 @Sql(value = {"/schema_td.sql", "/data_td.sql"}, executionPhase = BEFORE_TEST_CLASS)
 @ActiveProfiles("test")
-class TaskServiceTest {
+class TaskServiceSingleUserTest {
 
     @Autowired
     TaskRepository taskRepository;

@@ -16,18 +16,20 @@ tasks.named('test') {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
 
+    implementation 'org.jetbrains:annotations:24.0.0'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.jetbrains:annotations:24.0.0'
 
-    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'com.h2database:h2:2.1.214'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 
     implementation 'com.github.dozermapper:dozer-core:6.5.2'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
