@@ -1,12 +1,10 @@
 package dev.tiltrikt.todolist.response;
 
-import dev.tiltrikt.todolist.model.Task;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -33,13 +31,12 @@ public class TodolistResponse<T> {
     }
 
     @NotNull
-    public static TodolistResponse<List<Task>> ok(
-            @NotNull List<Task> taskList) {
+    public static <T> TodolistResponse<T> ok(
+            @NotNull T taskList) {
 
-        return TodolistResponse.<List<Task>>builder()
+        return TodolistResponse.<T>builder()
                 .payload(taskList)
                 .build();
-
     }
 
     @NotNull

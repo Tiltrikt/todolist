@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.*;
 
@@ -47,11 +48,21 @@ public class ControllerExceptionHandler extends DefaultHandlerExceptionResolver 
     public TodolistResponse<String> notValidField() {
 
         Map<String, String> errors = new TreeMap<>();
-        errors.put("exception", "Invalid request body");
+        errors.put("exception", "invalid request body");
 
         return TodolistResponse.error(errors);
     }
 
+    @NotNull
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public TodolistResponse<String> noResourceFound() {
+
+        Map<String, String> errors = new TreeMap<>();
+        errors.put("exception", "no resource on this path");
+
+        return TodolistResponse.error(errors);
+    }
 
     @NotNull
     @ExceptionHandler(Exception.class)

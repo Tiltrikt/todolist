@@ -1,5 +1,6 @@
 package dev.tiltrikt.todolist.controller.v1;
 
+import dev.tiltrikt.todolist.configuration.DefaultUserConfiguration;
 import dev.tiltrikt.todolist.model.Task;
 import dev.tiltrikt.todolist.dto.task.TaskAddRequest;
 import dev.tiltrikt.todolist.dto.task.TaskChangeRequest;
@@ -22,13 +23,15 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TaskController {
 
-    @Qualifier("taskServiceMultipleUser")
+    @Qualifier("taskServiceImpl")
     TaskService taskService;
+
+    DefaultUserConfiguration defaultUserConfiguration;
 
     @NotNull
     @GetMapping()
     public TodolistResponse<List<Task>> getAll() {
-        List<Task> taskList = taskService.getAll();
+        List<Task> taskList = taskService.getAll(defaultUserConfiguration.getDefaultUser());
 
         return TodolistResponse.ok(taskList);
     }
@@ -36,7 +39,7 @@ public class TaskController {
     @NotNull
     @GetMapping("/active")
     public TodolistResponse<List<Task>> getActive() {
-        List<Task> taskList = taskService.getByActive(true);
+        List<Task> taskList = taskService.getByActive(true, defaultUserConfiguration.getDefaultUser());
 
         return TodolistResponse.ok(taskList);
     }
@@ -44,7 +47,7 @@ public class TaskController {
     @NotNull
     @GetMapping("/finished")
     public TodolistResponse<List<Task>> getFinished() {
-        List<Task> taskList = taskService.getByActive(false);
+        List<Task> taskList = taskService.getByActive(false, defaultUserConfiguration.getDefaultUser());
 
         return TodolistResponse.ok(taskList);
     }
@@ -53,7 +56,7 @@ public class TaskController {
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public TodolistResponse<String> addTask(@Valid @RequestBody TaskAddRequest request) {
-        taskService.add(request);
+        taskService.add(request, defaultUserConfiguration.getDefaultUser());
 
         return TodolistResponse.ok();
     }
@@ -62,7 +65,7 @@ public class TaskController {
     @PutMapping("/update/{id}")
     public TodolistResponse<String> updateTask(
             @PathVariable int id, @Valid @RequestBody TaskChangeRequest request) {
-        taskService.update(id, request);
+        taskService.update(id, request, defaultUserConfiguration.getDefaultUser());
 
         return TodolistResponse.ok();
     }
@@ -70,7 +73,7 @@ public class TaskController {
     @NotNull
     @DeleteMapping("/delete/{id}")
     public TodolistResponse<String> deleteTask(@PathVariable int id) {
-        taskService.delete(id);
+        taskService.delete(id, defaultUserConfiguration.getDefaultUser());
 
         return TodolistResponse.ok();
     }

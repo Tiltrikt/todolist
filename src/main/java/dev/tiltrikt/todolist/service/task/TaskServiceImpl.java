@@ -1,7 +1,6 @@
 package dev.tiltrikt.todolist.service.task;
 
 import com.github.dozermapper.core.Mapper;
-import dev.tiltrikt.todolist.aspect.UserDependent;
 import dev.tiltrikt.todolist.exception.TaskException;
 import dev.tiltrikt.todolist.model.Task;
 import dev.tiltrikt.todolist.dto.task.TaskAddRequest;
@@ -10,9 +9,7 @@ import dev.tiltrikt.todolist.dto.task.TaskChangeRequest;
 import dev.tiltrikt.todolist.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -21,26 +18,22 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class TaskServiceMultipleUser implements TaskService, UserDependent {
+public class TaskServiceImpl implements TaskService {
 
     UserRepository userRepository;
 
     Mapper mapper;
 
-    @Setter
-    @NonFinal
-    User user;
-
     @Override
     @NotNull
-    public List<Task> getAll() {
+    public List<Task> getAll(@NotNull User user) {
 
         return user.getTaskList();
     }
 
     @Override
     @NotNull
-    public List<Task> getByActive(boolean active) {
+    public List<Task> getByActive(boolean active, @NotNull User user) {
 
         return user.getTaskList().stream()
                 .filter(task -> task.isActive() == active)
@@ -48,7 +41,7 @@ public class TaskServiceMultipleUser implements TaskService, UserDependent {
     }
 
     @Override
-    public void update(int id, TaskChangeRequest request) throws TaskException {
+    public void update(int id, @NotNull TaskChangeRequest request, @NotNull User user) throws TaskException {
 
         Task task = user.getTaskList().stream()
                 .filter((task1 -> task1.getId() == id))
@@ -62,7 +55,7 @@ public class TaskServiceMultipleUser implements TaskService, UserDependent {
     }
 
     @Override
-    public void delete(int id) throws TaskException {
+    public void delete(int id, @NotNull User user) throws TaskException {
 
         Task task = user.getTaskList().stream()
                 .filter((task1 -> task1.getId() == id))
@@ -75,7 +68,7 @@ public class TaskServiceMultipleUser implements TaskService, UserDependent {
     }
 
     @Override
-    public void add(@NotNull TaskAddRequest request) {
+    public void add(@NotNull TaskAddRequest request, @NotNull User user) {
 
         user.getTaskList().add(mapper.map(request, Task.class));
         userRepository.save(user);

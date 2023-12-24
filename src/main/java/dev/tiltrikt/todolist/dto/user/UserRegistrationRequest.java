@@ -12,7 +12,7 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
-public class UserAddRequest {
+public class UserRegistrationRequest {
 
     @NotBlank(message = "Username is mandatory")
     String username;
