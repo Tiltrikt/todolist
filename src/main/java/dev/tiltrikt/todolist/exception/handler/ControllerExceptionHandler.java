@@ -55,7 +55,7 @@ public class ControllerExceptionHandler extends DefaultHandlerExceptionResolver 
 
     @NotNull
     @ExceptionHandler(NoResourceFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public TodolistResponse<String> noResourceFound() {
 
         Map<String, String> errors = new TreeMap<>();

@@ -12,5 +12,4 @@ public class DozerConfiguration {
     public Mapper dozerBeanMapper() {
         return DozerBeanMapperBuilder.buildDefault();
     }
-
 }

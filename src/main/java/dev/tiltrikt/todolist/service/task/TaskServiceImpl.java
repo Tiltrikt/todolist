@@ -21,7 +21,6 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     UserRepository userRepository;
-
     Mapper mapper;
 
     @Override

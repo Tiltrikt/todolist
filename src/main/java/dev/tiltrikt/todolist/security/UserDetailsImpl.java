@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Collections;
 
-@Getter
+//@Getter
 @Setter
 @Component
 @AllArgsConstructor

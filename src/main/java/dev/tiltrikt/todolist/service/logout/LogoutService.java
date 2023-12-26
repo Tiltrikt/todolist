@@ -26,15 +26,14 @@ public class LogoutService implements LogoutHandler {
             HttpServletResponse response,
             Authentication authentication) {
 
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
+        String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new AuthenticationCredentialsNotFoundException("no token present");
         }
 
-        jwt = authHeader.substring(7);
-        Token storedToken = tokenRepository.findByToken(jwt)
-                .orElse(null);
+        String jwt = authHeader.substring(7);
+        Token storedToken = tokenRepository.findByToken(jwt).orElse(null);
+
         if (storedToken != null) {
             storedToken.setRevoked(true);
             tokenRepository.save(storedToken);

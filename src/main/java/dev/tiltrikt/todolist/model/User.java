@@ -7,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Data
 @Builder

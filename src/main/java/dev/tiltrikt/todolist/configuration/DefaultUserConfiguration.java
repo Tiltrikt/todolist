@@ -12,6 +12,8 @@ import lombok.experimental.NonFinal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.NoSuchElementException;
+
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -25,16 +27,16 @@ public class DefaultUserConfiguration implements CommandLineRunner {
     @NonFinal
     User defaultUser;
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
     public void run(String... args) {
 
         try {
-            //noinspection OptionalGetWithoutIsPresent
+
             defaultUser = userRepository.findUserByUsername("user").get();
-        } catch (Exception ex) {
+        } catch (NoSuchElementException ex) {
 
             authenticationService.register(new UserRegistrationRequest("user", "pass"));
-            //noinspection OptionalGetWithoutIsPresent
             defaultUser = userRepository.findUserByUsername("user").get();
         }
 

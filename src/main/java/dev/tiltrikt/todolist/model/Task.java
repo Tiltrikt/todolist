@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Data
 @Builder

@@ -1,7 +1,8 @@
 package dev.tiltrikt.todolist.security;
 
-import dev.tiltrikt.todolist.repository.TokenRepository;
+import dev.tiltrikt.todolist.model.User;
 import dev.tiltrikt.todolist.service.jwt.JwtService;
+import dev.tiltrikt.todolist.service.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,10 +11,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,8 +23,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     JwtService jwtService;
-    UserDetailsService userDetailsService;
-    TokenRepository tokenRepository;
+    UserService userService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -38,29 +35,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String username;
+        String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(7);
-        username = jwtService.extractUsername(jwt);
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            boolean isTokenValid = tokenRepository.findByToken(jwt)
-                    .map(t -> !t.isRevoked())
-                    .orElse(false);
-            if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
+        String jwt = authHeader.substring(7);
+        if (jwtService.isTokenValid(jwt, "access")) {
+            User user = userService.getUser(jwtService.extractUsername(jwt));
+
+            SecurityContextHolder.getContext()
+                    .setAuthentication(new UserAuthenticationToken(user));
         }
 
         filterChain.doFilter(request, response);
