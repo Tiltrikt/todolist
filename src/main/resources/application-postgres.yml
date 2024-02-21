@@ -2,4 +2,5 @@ spring:
   datasource:
     username: postgres
     password: postgres
-    url: jdbc:postgresql://localhost:5432/todolist
+#    url: jdbc:postgresql://localhost:5432/todolist
+    url: jdbc:postgresql://host.docker.internal:5433/todolist

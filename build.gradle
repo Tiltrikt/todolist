@@ -4,7 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'com.example'
+group = 'dev.tiltrikt'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -16,7 +16,6 @@ tasks.named('test') {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-security'
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
 
@@ -38,5 +37,13 @@ dependencies {
     implementation 'com.github.dozermapper:dozer-core:6.5.2'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+jar {
+    manifest {
+        attributes["Main-Class"] = "dev.tiltrikt.todolist.application.TodolistApplication"
+    }
 }

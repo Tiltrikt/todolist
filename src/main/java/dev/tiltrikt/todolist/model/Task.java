@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 @Data
 @Builder
 @AllArgsConstructor
-@Table(schema = "todolist", name = "tasks")
+@Table(name = "tasks")
 @NoArgsConstructor(force = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Task {
@@ -28,4 +28,3 @@ public class Task {
     @Builder.Default
     boolean active = true;
 }
-

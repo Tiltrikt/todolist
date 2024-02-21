@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(schema = "todolist", name = "users")
+@Table(name = "users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,7 @@ public class TaskController {
     @GetMapping("/active")
     public TodolistResponse<List<Task>> getActive(@AuthenticationPrincipal User user) {
         List<Task> taskList = taskService.getByActive(true, user);
-
+        
         return TodolistResponse.ok(taskList);
     }
 

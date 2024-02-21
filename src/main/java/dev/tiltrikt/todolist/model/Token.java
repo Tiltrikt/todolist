@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(schema = "todolist", name = "token")
+@Table(name = "token")
 public class Token {
 
   @Id
