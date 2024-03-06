@@ -33,6 +33,9 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'com.h2database:h2:2.1.214'
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+    runtimeOnly 'org.xerial:sqlite-jdbc:3.45.1.0'
+    implementation 'org.hibernate.orm:hibernate-community-dialects:6.4.4.Final'
+
 
     implementation 'com.github.dozermapper:dozer-core:6.5.2'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
